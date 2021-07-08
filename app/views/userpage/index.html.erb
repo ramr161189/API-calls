@@ -10,34 +10,32 @@ table, th, td {
   <% require "securerandom" %>
   <% $username = User.find(session[:user_id]).email %>
   <% User.find() do |users| %>
-      <%if $username==users.email%>
-       <% $plan = users.plan %>
-       <% if $plan=='basic'%>
-         <%$totalapis=5%>
-         <%$apicalls=500%>
-       <%elsif $plan=='advance'%>
-          <%$apicalls=1000%>
-         <%$totalapis=10%>
-       <%else %>
-         <%$apicalls=2000%>
-        <%$totalapis=20%>
-      <%end%>
+      <%if $username == users.email%>
+        <% $plan = users.plan %>
+        <% if $plan == 'basic'%>
+          <%$totalapis = 5%>
+          <%$apicalls = 500%>
+        <%elsif $plan == 'advance'%>
+          <%$apicalls = 1000%>
+          <%$totalapis = 10%>
+        <%else %>
+          <%$apicalls = 2000%>
+          <%$totalapis = 200000%>
+        <%end%>
       <%end%>
   <%end%>
-  <%$apicount=Integer(0)%>
-  <%totalapicalls=0%>
+  <%$apicount = Integer(0)%>
+  <%totalapicalls = 0%>
   <%Apigeneration.find_each(:batch_size => 10000) do |apigenerations|%>
-    <% if $username==apigenerations.email %>
-      <%totalapicalls+= Integer(apigenerations.usage)%>
+    <% if $username == apigenerations.email %>
+      <%totalapicalls += Integer(apigenerations.usage)%>
     <%end%>
   <%end%>
-
-    <p style="text-align:right; color:blue;">Welcome <%= $username%>(<%= $plan%>)</p>
-    <%$index=0%>
+  <p style="text-align:right; color:blue;">Welcome <%= $username%>(<%= $plan%>)</p>
+    <%$index = 0%>
   <p style="text-align:right;"> <%= link_to "logout", :controller=> "sessions", :action=> "destroy" %></p>
   <p style="text-align:right;"> <%= totalapicalls%> / <%= $apicalls%></p>
   <p>Generate api-key <%= link_to "+", :controller=> "apigeneration", :action=>"add" %> </p>
-
   <table  id="myTable"> 
   <tr>
   <td>api_key </td>
@@ -46,23 +44,20 @@ table, th, td {
   <td>email</td>
   </tr> 
   <%Apigeneration.find_each(:batch_size => 10000) do |apigenerations|%>
-  <%if $username==apigenerations.email%>
+    <%if $username == apigenerations.email%>
       <%if  $apicount < $totalapis%>
-      <%$apicount=$apicount+1%>
+      <%$apicount = $apicount+1%>
       <tr>
       <td><%= apigenerations.apikey  %> <%= link_to "X", {controller:"apigeneration", action:"delete", my_params:apigenerations.apikey}%></td>
-        <!--:controller=> "apigeneration", :action=>"delete"-->
-        <% $id = apigenerations.id%></td>
+      <% $id = apigenerations.id%></td>
       <td><%= apigenerations.created_at %></td>
       <td><%= apigenerations.usage %></td>     
       <td><%= apigenerations.email %></td>     
       </tr>
       <%end%>
+    <%end%>
   <%end%>
-  <%end%>
-</table>
-<%if $wordcall==1%>
-<p style="text-align:blue"><%= $val%></p>
+  </table>
 <%$val=""%>
 <%end%>
 </body>
