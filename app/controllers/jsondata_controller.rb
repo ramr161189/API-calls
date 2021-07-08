@@ -1,23 +1,22 @@
 class JsondataController < ApplicationController
-	require 'json'
-
-	def wordsdetails
-		require 'json'
-		file = File.read('/home/student/Desktop/dictionary.json')
-		data_hash = JSON.parse(file)
-		data_hash.each do |data|
-			json = Jsondatum.new
-		 data.each do |values|
-	 	json.word=values if values.class==String
-	 	if values.class==Hash
-	 		 json.definitions=values["definitions"]
-	 		json.examples=values["examples"]
-	 		json.relatedwords=values["relatedWords"]
-	 	end
-	 	json.save
-	 end
-	end
-	end	
+require 'json'
+def wordsdetails
+  require 'json'
+  file = File.read('/home/student/Desktop/dictionary.json')
+  data_hash = JSON.parse(file)
+  data_hash.each do |data|
+    json = Jsondatum.new
+    data.each do |values|
+      json.word = values if values.class == String
+      if values.class == Hash
+        json.definitions = values["definitions"]
+	json.examples = values["examples"]
+	json.relatedwords = values["relatedWords"]
+      end
+      json.save
+     end
+   end
+end	
 
 	def wordofday
 		num=rand 133..173
