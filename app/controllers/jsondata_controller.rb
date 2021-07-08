@@ -34,7 +34,6 @@ def wordofday
 end
 
 def randomWord
-  $wordcall = 1
   apigeneration = Apigeneration.new
   key = String(params[:key])
   apikey = key[1, key.length]
@@ -54,7 +53,6 @@ def randomWord
 end
 
 def definitions
-  $wordcall = 1
   apigeneration = Apigeneration.new
   key = String(params[:key])
   keyval = key[1,key.length]
@@ -86,7 +84,6 @@ def definitions
 end
 
 def examples
-  $wordcall = 1
   apigeneration = Apigeneration.new
   key = String(params[:key])
   keyval = key[1,key.length]
@@ -118,7 +115,6 @@ def examples
 end
 	
 def relatedWords
-  $wordcall = 1
   apigeneration=Apigeneration.new
   key = String(params[:key])
   keyval = key[1,key.length]
