@@ -12,18 +12,17 @@ def add
   apigeneration.save
   redirect_to '/dashboard'
 end
-
-	def delete
-		val=params[:my_params]
-		Apigeneration.find_each(:batch_size => 10000) do |apigenerations|
-			if apigenerations.apikey==val
-				Apigeneration.delete(apigenerations.id)
-				break
-			end
-		end
-		redirect_to '/dashboard'
-		
-	end
+	
+def delete
+  val = params[: my_params]
+  Apigeneration.find_each(:batch_size => 10000) do |apigenerations|
+    if apigenerations.apikey == val
+      Apigeneration.delete(apigenerations.id)
+      break
+    end
+ end
+  redirect_to '/dashboard'
+end
 
 	def apikeycheck
 		apigeneration=Apigeneration.new
