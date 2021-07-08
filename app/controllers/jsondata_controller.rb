@@ -43,7 +43,7 @@ def randomWord
       val = Integer(apigenerations.usage) + 1
       apigenerations.update(usage: val)
       temp = 1
-      id = rand 133..168
+      id = rand 133..173
       word = Jsondatum.find(id).word
       val = {:word =>"@Random word is: #{word}@"}
       $jsonval = val.to_json
