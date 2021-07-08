@@ -1,9 +1,8 @@
 class ApigenerationController < ApplicationController
-	$totalusage=0
-
-	def create
-		api_id=apigeneration.id
-	end
+$totalusage=0
+def create
+  api_id=apigeneration.id
+end
 
 	def add
 		apigeneration=Apigeneration.new
