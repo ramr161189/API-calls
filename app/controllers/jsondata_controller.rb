@@ -118,33 +118,33 @@ def examples
 end
 	
 def relatedWords
-  $wordcall=1
+  $wordcall = 1
   apigeneration=Apigeneration.new
-  key=String(params[:key])
-  keyval=key[1,key.length]
-  wordparam=String(params[:word])
-  word=wordparam[1,key.length]
-  a=0
-  t=0
+  key = String(params[:key])
+  keyval = key[1,key.length]
+  wordparam = String(params[:word])
+  word = wordparam[1,key.length]
+  a = 0
+  t = 0
   Apigeneration.find_each(:batch_size => 10000) do |apigenerations|
-    if apigenerations.apikey.chomp.casecmp(keyval.chomp)==0
-      val=Integer(apigenerations.usage)+1
+    if apigenerations.apikey.chomp.casecmp(keyval.chomp) == 0
+      val = Integer(apigenerations.usage) + 1
       apigenerations.update(usage: val)
-      a=1
+      a = 1
       Jsondatum.find_each(:batch_size => 10000) do |jsondata|
-        if jsondata.word==word
-          t=1
-	  relatedWords=jsondata.relatedwords
-	  val="@relatedWords are #{relatedWords}@"
-	  $jsonval=val.to_json
+        if jsondata.word == word
+          t = 1
+	  relatedWords = jsondata.relatedwords
+	  val = "@relatedWords are #{relatedWords}@"
+	  $jsonval = val.to_json
         end
       end
     end
   end
-  if a==0
-    $val="Keynotfound"
+  if a == 0
+    $jsonval = "Keynotfound"
   elsif t==0
-    $val="wordisnotpresent "
+    $jsonval = "wordisnotpresent "
   end
   redirect_to '/words/word:{word}/relatedWords?api_key:{keyval}'
 end
