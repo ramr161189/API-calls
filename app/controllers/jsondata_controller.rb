@@ -18,20 +18,20 @@ def wordsdetails
    end
 end	
 
-	def wordofday
-		num=rand 133..173
-		word=Jsondatum.find(num).word
-		Jsondatum.find_each(:batch_size => 10000) do |jsondata|
-			if jsondata.word==word
-				definition=jsondata.definitions
-				examples=jsondata.examples
-				relatedWords=jsondata.relatedwords
-				$val="word is #{word} +‘\n’ + definition is #{definition} +‘\n’+  examples is #{examples} +‘\n’+  relatedwords are #{relatedWords}\n "
-				$jsonval=$val.to_json
-				end
-			end
-		redirect_to '\jsonpage'
-	end
+def wordofday
+  num = rand 133..173
+  word = Jsondatum.find(num).word
+  Jsondatum.find_each(:batch_size => 10000) do |jsondata|
+    if jsondata.word == word
+      definition = jsondata.definitions
+      examples = jsondata.examples
+      relatedWords = jsondata.relatedwords
+      val = "word is #{word} +‘\n’ + definition is #{definition} +‘\n’+  examples is #{examples} +‘\n’+  relatedwords are #{relatedWords}\n "
+      $jsonval = val.to_json
+    end
+  end
+  redirect_to '\jsonpage'
+end
 
 	def randomWord
 		$val=" "
