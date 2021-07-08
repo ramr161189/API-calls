@@ -26,34 +26,32 @@ def wordofday
       definition = jsondata.definitions
       examples = jsondata.examples
       relatedWords = jsondata.relatedwords
-      val = "word is #{word} +‘\n’ + definition is #{definition} +‘\n’+  examples is #{examples} +‘\n’+  relatedwords are #{relatedWords}\n "
+      val = "word is #{word}  definition is #{definition} examples is #{examples}  relatedwords are #{relatedWords} "
       $jsonval = val.to_json
     end
   end
   redirect_to '\jsonpage'
 end
 
-	def randomWord
-		$val=" "
-		$wordcall=1
-		apigeneration=Apigeneration.new
-		key=String(params[:key])
-		apikey=key[1,key.length]
-		t=0
-		Apigeneration.find_each(:batch_size => 10000) do |apigenerations|
-			if apigenerations.apikey.chomp.casecmp(apikey.chomp)==0
-				val=Integer(apigenerations.usage)+1
-				apigenerations.update(usage: val)
-				t=1
-				id=rand 133..168
-				word=Jsondatum.find(id).word
-				$val={:word =>"@Random word is: #{word}@"}
-				$jsonval=$val.to_json
-
-			end
-		end
-		redirect_to '/words/randomWord?api_key:keyval'
-	end
+def randomWord
+  $wordcall = 1
+  apigeneration = Apigeneration.new
+  key = String(params[:key])
+  apikey = key[1, key.length]
+  temp = 0
+  Apigeneration.find_each(:batch_size => 10000) do |apigenerations|
+    if apigenerations.apikey.chomp.casecmp(apikey.chomp) == 0
+      val = Integer(apigenerations.usage) + 1
+      apigenerations.update(usage: val)
+      temp = 1
+      id = rand 133..168
+      word = Jsondatum.find(id).word
+      val = {:word =>"@Random word is: #{word}@"}
+      $jsonval = val.to_json
+    end
+  end
+  redirect_to '/words/randomWord?api_key:keyval'
+end
 
 	def definitions
 		$wordcall=1
