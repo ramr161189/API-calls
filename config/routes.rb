@@ -20,5 +20,4 @@ Rails.application.routes.draw do
   get '/dashboard' => 'userpage#index'
   get '/logout' => 'sessions#destroy'
 
- 
 end
