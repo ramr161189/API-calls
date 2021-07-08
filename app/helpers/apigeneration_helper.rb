@@ -1,0 +1,2 @@
+module ApigenerationHelper
+end

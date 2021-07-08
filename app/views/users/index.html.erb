@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sign in and Signup</title>
+</head>
+<body>
+</body>
+    <h1>
+       Login
+	</h1>
+
+	<form action="/sessions" method="POST">
+		<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+		<p><input type="email" name="login[email]" placeholder="email"></p>
+		<p><input type="password" name="login[password]" placeholder="password"></p>
+		<input type="submit" name="submit" class="submit" value="Login">
+	</form>
+
+	<div class ="errors">
+		<% if flash[:login_errors] %>
+		<% flash[:login_errors].each do |error| %>
+		<p> <%=error%></p>
+		<%end%>
+		<%end%>
+	</div>
+
+	<h1>
+		Registration
+	</h1>
+
+	<form action="/users" method="POST">
+		<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+		<p><input type="email" name="user[email]" placeholder="email"></p>
+		<p><input type="password" name="user[password]" placeholder="password"></p>
+		<p><input type="password" name="user[password_confirmation]" placeholder="password_confirmation"></p>
+		<p><input type="plan" name=user[plan] placeholder="enter basic or advanced or expert"></p>
+		<input type="submit" name="submit" class="submit" value="Registration">
+	</form>
+
+	<div class ="errors">
+		<% if flash[:register_errors] %>
+		<% flash[:register_errors].each do |error| %>
+		<p> <%=error%></p>
+		<%end%>
+		<%end%>
+	</div>
+
+</html>
