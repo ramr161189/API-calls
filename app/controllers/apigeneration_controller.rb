@@ -1,18 +1,17 @@
 class ApigenerationController < ApplicationController
-$totalusage=0
+$totalusage = 0
 def create
-  api_id=apigeneration.id
+  api_id = apigeneration.id
 end
-
-	def add
-		apigeneration=Apigeneration.new
-		    apigeneration.apikey=SecureRandom.uuid
-		    apigeneration.usage=0
-		    apigeneration.plan="basic"
-		    apigeneration.email=$username
-		    apigeneration.save
-	    redirect_to '/dashboard'
-	end
+	
+def add
+  apigeneration = Apigeneration.new
+  apigeneration.apikey = SecureRandom.uuid
+  apigeneration.usage = 0
+  apigeneration.email = $username
+  apigeneration.save
+  redirect_to '/dashboard'
+end
 
 	def delete
 		val=params[:my_params]
