@@ -85,43 +85,40 @@ def definitions
   redirect_to '/words/word:{word}/definitions?api_key:{keyval}'
 end
 
-	def examples
-		$wordcall=1
-		apigeneration=Apigeneration.new
-		key=String(params[:key])
-		keyval=key[1,key.length]
-		wordparam=String(params[:word])
-		word=wordparam[1,key.length]
-		a=0
-		t=0
-		Apigeneration.find_each(:batch_size => 10000) do |apigenerations|
-			if apigenerations.apikey.chomp.casecmp(keyval.chomp)==0
-				val=Integer(apigenerations.usage)+1
-				apigenerations.update(usage: val)
-				a=1
-				Jsondatum.find_each(:batch_size => 10000) do |jsondata|
-					if jsondata.word==word
-						t=1
-						examples=jsondata.examples
-						$val="examples is"+ examples
-						$jsonval=$val.to_json
-					end
-				end
-			end
-		end
-		if a==0
-			$val="Keynotfound"
-			
-		elsif t==0
-			$val="wordisnotpresent "
-		end
-		redirect_to '/words/word:{word}/examples?api_key:{keyval}'
-
+def examples
+  $wordcall = 1
+  apigeneration = Apigeneration.new
+  key = String(params[:key])
+  keyval = key[1,key.length]
+  wordparam = String(params[:word])
+  word = wordparam[1,key.length]
+  a = 0
+  t = 0
+  Apigeneration.find_each(:batch_size => 10000) do |apigenerations|
+    if apigenerations.apikey.chomp.casecmp(keyval.chomp) == 0
+      val = Integer(apigenerations.usage) + 1
+      apigenerations.update(usage: val)
+      a = 1
+      Jsondatum.find_each(:batch_size => 10000) do |jsondata|
+        if jsondata.word == word
+	  t = 1
+	  examples = jsondata.examples
+	  val = "examples is" + examples
+	  $jsonval = val.to_json
 	end
-
-
-	def relatedWords
-		$wordcall=1
+      end
+    end
+  end
+  if a == 0
+    $jsonval = "Keynotfound"
+  elsif t == 0
+    $jsonval = "wordisnotpresent "
+  end
+  redirect_to '/words/word:{word}/examples?api_key:{keyval}'
+end
+	
+def relatedWords
+  $wordcall=1
 		apigeneration=Apigeneration.new
 		key=String(params[:key])
 		keyval=key[1,key.length]
