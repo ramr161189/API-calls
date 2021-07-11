@@ -85,9 +85,11 @@ def definitions
     end
   end
   if wordstatus == 0
-    $jsonval = "WordnotFound"
+    val = {:error => "WordnotFound"}
+    $jsonval = val.to_json
   elsif keystatus == 0
-    $jsonval = "APInotFound"
+    val = {:error => "APInotFound"}
+    $jsonval = val.to_json
   end
   redirect_to "/words/word:#{word}/definitions?api_key:#{apikey}"
 end
