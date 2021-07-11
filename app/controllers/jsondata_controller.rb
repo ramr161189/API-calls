@@ -1,9 +1,8 @@
 class JsondataController < ApplicationController
 require 'json'
+file = File.read('/home/student/Desktop/dictionary.json')
+data_hash = JSON.parse(file)
 def wordsdetails
-  require 'json'
-  file = File.read('/home/student/Desktop/dictionary.json')
-  data_hash = JSON.parse(file)
   data_hash.each do |data|
     json = Jsondatum.new
     data.each do |values|
@@ -135,30 +134,37 @@ end
 def relatedWords
   apigeneration=Apigeneration.new
   key = String(params[:key])
-  keyval = key[1,key.length]
+  apikey = key[1,key.length]
   wordparam = String(params[:word])
-  word = wordparam[1,key.length]
-  a = 0
-  t = 0
+  randomWord = wordparam[1,key.length]
+  apistatus = 0
+  wordstatus = 0
   Apigeneration.find_each(:batch_size => 10000) do |apigenerations|
     if apigenerations.apikey.chomp.casecmp(keyval.chomp) == 0
       val = Integer(apigenerations.usage) + 1
       apigenerations.update(usage: val)
-      a = 1
+      apistatus = 1
       Jsondatum.find_each(:batch_size => 10000) do |jsondata|
-        if jsondata.word == word
-          t = 1
-	  relatedWords = jsondata.relatedwords
-	  val = "@relatedWords are #{relatedWords}@"
-	  $jsonval = val.to_json
+        $data_hash.each do |data|
+          if randomWord==data[0]
+	    wordstatus=1
+            data.each do |values|
+	      if values.class==Hash
+	        definition=values["relatedWords"]
+	        $jsonval=definition
+	      end
+	    end
+	  end
         end
       end
     end
   end
-  if a == 0
-    $jsonval = "Keynotfound"
-  elsif t==0
-    $jsonval = "wordisnotpresent "
+  if wordstatus == 0
+    val = {:error => "WordnotFound"}
+    $jsonval = val.to_json
+  elsif keystatus == 0
+    val = {:error => "APInotFound"}
+    $jsonval = val.to_json
   end
   redirect_to '/words/word:{word}/relatedWords?api_key:{keyval}'
 end
