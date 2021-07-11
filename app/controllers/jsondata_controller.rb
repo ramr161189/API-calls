@@ -166,6 +166,6 @@ def relatedWords
     val = {:error => "APInotFound"}
     $jsonval = val.to_json
   end
-  redirect_to '/words/word:{word}/relatedWords?api_key:{keyval}'
+  redirect_to "/words/word:#{randomWord}/relatedWords?api_key:#{apikey}"
 end
 end
