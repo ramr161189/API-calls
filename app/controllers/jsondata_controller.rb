@@ -23,12 +23,13 @@ def wordofday
   word = Jsondatum.find(num).word
   Jsondatum.find_each(:batch_size => 10000) do |jsondata|
     if jsondata.word == word
-      definition = jsondata.definitions
-      examples = jsondata.examples
-      relatedWords = jsondata.relatedwords
-      val = "word is #{word}  definition is #{definition} examples is #{examples}  relatedwords are #{relatedWords} "
-      $jsonval = val.to_json
-    end
+      $data_hash.each do |data|
+        if word == data[0]
+          $jsonval = data
+	  break
+          end
+        end
+     end
   end
   redirect_to '\jsonpage'
 end
