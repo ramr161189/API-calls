@@ -1,8 +1,4 @@
 class ApigenerationController < ApplicationController
-def create
-  api_id = apigeneration.id
-end
-	
 def add
   apigeneration = Apigeneration.new
   apigeneration.apikey = SecureRandom.uuid
@@ -17,6 +13,4 @@ def delete
   Apigeneration.where(apikey:val ).delete_all
   redirect_to '/dashboard'
 end
-
-
 end
