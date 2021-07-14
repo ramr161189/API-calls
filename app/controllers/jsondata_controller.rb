@@ -9,30 +9,30 @@ class JsondataController < ApplicationController
     apigeneration.update(usage: val)
   end
 
-	def wordcheck
+  def wordcheck
     wordparam = String(params[:word])
-	  $randomWord = wordparam[1,wordparam.length]
-		jsondata = Jsondatum.find_by(word:$randomWord)
-		$data = jsondata
-	end
+    $randomWord = wordparam[1,wordparam.length]
+    jsondata = Jsondatum.find_by(word:$randomWord)
+    $data = jsondata
+  end
 
-	def wordsdetails
-		require 'json'
-		file = File.read('/home/student/Desktop/dictionary.json')
-		$data_hash = JSON.parse(file)
-	  $data_hash.each do |data|
-		  json = Jsondatum.new
-		 	data.each do |values|
-	 		json.word = values if values.class == String
-	 		if values.class == Hash
-	 			json.definitions = values["definitions"]
-	 		  json.examples = values["examples"]
-	 			json.relatedwords = values["relatedWords"]
-	 		end
-	 	  json.save
-	 end
+  def wordsdetails
+    require 'json'
+    file = File.read('/home/student/Desktop/dictionary.json')
+    $data_hash = JSON.parse(file)
+    $data_hash.each do |data|
+      json = Jsondatum.new
+      data.each do |values|
+        json.word = values if values.class == String
+	if values.class == Hash
+	  json.definitions = values["definitions"]
+	  json.examples = values["examples"]
+	  json.relatedwords = values["relatedWords"]
 	end
-	end	
+	json.save
+      end
+    end
+  end	
 
 	def wordofday
 		num = rand 133..168
