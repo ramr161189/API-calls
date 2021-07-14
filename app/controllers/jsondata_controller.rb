@@ -1,7 +1,6 @@
 class JsondataController < ApplicationController
   before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedwords]
-	before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
-
+  before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
 	def apikeycheck
 		key = String(params[:key])
 		$keyval = key[1,key.length]
