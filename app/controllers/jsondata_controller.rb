@@ -34,12 +34,12 @@ class JsondataController < ApplicationController
     end
   end	
 
-	def wordofday
-		num = rand 133..168
-		jsondata = Jsondatum.find(num)
-		$jsonval = jsondata.definitions + jsondata.examples + jsondata.relatedwords
-		redirect_to '\jsonpage'
-	end
+  def wordofday
+    num = rand 133..168
+    jsondata = Jsondatum.find(num)
+    $jsonval = jsondata.definitions + jsondata.examples + jsondata.relatedwords
+    redirect_to '\jsonpage'
+  end
 
 	def randomWord
 		id = rand 133..168
