@@ -2,11 +2,14 @@ class JsondataController < ApplicationController
   before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedwords]
   before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
   def apikeycheck
-    key = String(params[:key])
-    $keyval = key[1,key.length]
-    apigeneration = Apigeneration.find_by(apikey:$keyval)
-    val = Integer(apigeneration.usage)+1
-    apigeneration.update(usage: val)
+    if $totalapicalls<totalapis
+	    key = String(params[:key])
+	    $keyval = key[1,key.length]
+	    apigeneration = Apigeneration.find_by(apikey:$keyval)
+	    val = Integer(apigeneration.usage)+1
+	    apigeneration.update(usage: val)
+    else
+	    format.html{redirect_to '/dashboard',notice: 'APIcalls Limit exceeded'}
   end
 
   def wordcheck
