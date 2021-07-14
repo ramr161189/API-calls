@@ -42,9 +42,8 @@ table, th, td {
   <td>Usage</td>
   <td>email</td>
   </tr> 
-  <%Apigeneration.find_each(:batch_size => 10000) do |apigenerations|%>
-    <%if $username == apigenerations.email%>
-      <%if  $apicount < $totalapis%>
+  <%apigenerations=Apigeneration.find_by(email:$username)%>
+    <%if  $apicount < $totalapis%>
       <%$apicount = $apicount+1%>
       <tr>
       <td><%= apigenerations.apikey  %> <%= link_to "X", {controller:"apigeneration", action:"delete", my_params:apigenerations.apikey}%></td>
@@ -52,11 +51,7 @@ table, th, td {
       <td><%= apigenerations.created_at %></td>
       <td><%= apigenerations.usage %></td>         
       </tr>
-      <%end%>
     <%end%>
-  <%end%>
-  </table>
-<%$val=""%>
-<%end%>
+ </table>
 </body>
 </html>
