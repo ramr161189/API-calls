@@ -41,30 +41,30 @@ class JsondataController < ApplicationController
     redirect_to '\jsonpage'
   end
 
-	def randomWord
-		id = rand 133..168
-		word =  Jsondatum.find(id).word
-		val = {"word" =>"#{word}"}
-		$jsonval = val
-		redirect_to "/words/randomWord?api_key:#{$keyval}"
-	end
+  def randomWord
+    id = rand 133..168
+    word =  Jsondatum.find(id).word
+    val = {"word" =>"#{word}"}
+    $jsonval = val
+    redirect_to "/words/randomWord?api_key:#{$keyval}"
+  end
 
-	def definitions
-		definition = $data.definitions
-		$jsonval = definition
-		redirect_to "/words/word:#{$randomWord}/definitions?api_key:#{$keyval}"
-	end
+  def definitions
+    definition = $data.definitions
+    $jsonval = definition
+    redirect_to "/words/word:#{$randomWord}/definitions?api_key:#{$keyval}"
+  end
+	
+  def examples
+    definition = $data.examples
+    $jsonval = definition
+    redirect_to "/words/word:#{$randomWord}/examples?api_key:#{$keyval}"
+  end
 
-	def examples
-		definition = $data.examples
-		$jsonval = definition
-		redirect_to "/words/word:#{$randomWord}/examples?api_key:#{$keyval}"
-	end
-
-	def relatedWords
-		definition = $data.relatedwords
-		$jsonval = definition
-		redirect_to "/words/word:#{$randomWord}/relatedWords?api_key:#{$keyval}"
-	end
+  def relatedWords
+    definition = $data.relatedwords
+    $jsonval = definition
+    redirect_to "/words/word:#{$randomWord}/relatedWords?api_key:#{$keyval}"
+  end
 end
 
