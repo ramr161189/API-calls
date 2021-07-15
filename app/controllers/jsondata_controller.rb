@@ -19,9 +19,14 @@ class JsondataController < ApplicationController
 
   def wordcheck
     wordparam = String(params[:word])
-    $randomWord = wordparam[1,wordparam.length]
+    @randomWord = wordparam[1,wordparam.length]
     jsondata = Jsondatum.find_by(word:$randomWord)
-    $data = jsondata
+    if jsondata
+      @w=1	  
+      @data = jsondata
+    else
+      @w=0
+    end
   end
 
   def wordsdetails
@@ -62,7 +67,7 @@ class JsondataController < ApplicationController
   end
 
   def definitions
-    definition = $data.definitions
+    definition = @data.definitions
     $jsonval = definition
     redirect_to "/words/word:#{$randomWord}/definitions?api_key:#{$keyval}"
   end
