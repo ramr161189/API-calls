@@ -18,14 +18,17 @@ class JsondataController < ApplicationController
   end
 
   def wordcheck
-    wordparam = String(params[:word])
-    @randomWord = wordparam[1,wordparam.length]
-    jsondata = Jsondatum.find_by(word:$randomWord)
-    if jsondata
-      @w=1	  
-      @data = jsondata
+    @w=0
+	  if @k==1
+      wordparam = String(params[:word])
+      @randomWord = wordparam[1,wordparam.length]
+      jsondata = Jsondatum.find_by(word:$randomWord)
+      if jsondata
+        @w=1	  
+        @data = jsondata
+      end
     else
-      @w=0
+      $jsonval = {"error" => "APIKEYNotFound"}
     end
   end
 
@@ -67,20 +70,38 @@ class JsondataController < ApplicationController
   end
 
   def definitions
-    definition = @data.definitions
-    $jsonval = definition
+    if @w==1
+      definition = @data.definitions
+      $jsonval = definition
+    elsif @w==0 && @k==1
+      $jsonval = {"error" => "wordnotfound"}
+    else
+      $jsonval = {"error" => "APIKEYNotfound"}
+    end
     redirect_to "/words/word:#{$randomWord}/definitions?api_key:#{$keyval}"
   end
 	
   def examples
-    definition = $data.examples
-    $jsonval = definition
+    if @w==1
+      examples = @data.examples
+      $jsonval = examples
+    elsif @w==0 && @k==1
+      $jsonval = {"error" => "wordnotfound"}
+    else
+      $jsonval = {"error" => "APIKEYNotfound"}
+    end
     redirect_to "/words/word:#{$randomWord}/examples?api_key:#{$keyval}"
   end
 
   def relatedWords
-    definition = $data.relatedwords
-    $jsonval = definition
+   if @w==1
+      relatedWords = @data.relatedWords
+      $jsonval = relatedWords
+    elsif @w==0 && @k==1
+      $jsonval = {"error" => "wordnotfound"}
+    else
+      $jsonval = {"error" => "APIKEYNotfound"}
+    end
     redirect_to "/words/word:#{$randomWord}/relatedWords?api_key:#{$keyval}"
   end
 end
