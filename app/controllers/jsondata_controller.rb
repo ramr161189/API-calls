@@ -32,9 +32,9 @@ class JsondataController < ApplicationController
 
   def wordsdetails
     require 'json'
-    file = File.read('/home/student/Desktop/dictionary.json')
-    $data_hash = JSON.parse(file)
-    $data_hash.each do |data|
+    file = File.read('dictionary.json')
+    data_hash = JSON.parse(file)
+    data_hash.each do |data|
       json = Jsondatum.new
       data.each do |values|
         json.word = values if values.class == String
