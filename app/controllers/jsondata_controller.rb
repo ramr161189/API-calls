@@ -5,16 +5,13 @@ class JsondataController < ApplicationController
     if User.find_by(email:$username).count < $apicalls
       key = String(params[:key])
       $keyval = key[1,key.length]
-      apigeneration = Apigeneration.find_by(apikey:$keyval)
-      if apigeneration
-        val = Integer(apigeneration.usage) + 1
-        apigeneration.update(usage: val)
+      @apigeneration = Apigeneration.find_by(apikey:$keyval)
+      if @apigeneration
+        val = Integer(@apigeneration.usage) + 1
+        @apigeneration.update(usage: val)
 	user = User.find_by(email:$username)
 	countval = Integer(user.count) + 1
 	user.update(count: countval)			
-	@k=1
-      else
-        @k=0
       end      
     else
       format.html{redirect_to '/dashboard',notice: 'APIcalls Limit exceeded'}
@@ -22,17 +19,13 @@ class JsondataController < ApplicationController
   end
 
   def wordcheck
-    @w = 0
-    if @k == 1
+    if @apigeneration
       wordparam = String(params[:word])
       @randomWord = wordparam[1,wordparam.length]
-      jsondata = Jsondatum.find_by(word:$randomWord)
-      if jsondata
-        @w = 1	  
-        @data = jsondata
+      @jsondata = Jsondatum.find_by(word:$randomWord)
+      if @jsondata
+        @data = @jsondata
       end
-    else
-      $jsonval = {"error" => "APIKEYNotFound"}
     end
   end
 
@@ -62,7 +55,7 @@ class JsondataController < ApplicationController
   end
 
   def randomWord
-    if @k == 1	  
+    if @apigeneration  
       id = rand 133..168
       word =  Jsondatum.find(id).word
       val = {"word" =>"#{word}"}
@@ -74,10 +67,10 @@ class JsondataController < ApplicationController
   end
 
   def definitions
-    if @w == 1
+    if @jsonword
       definition = @data.definitions
       $jsonval = definition
-    elsif @w==0 && @k==1
+    elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
       $jsonval = {"error" => "APIKEYNotfound"}
@@ -86,10 +79,10 @@ class JsondataController < ApplicationController
   end
 	
   def examples
-    if @w == 1
+    if @jsonword
       examples = @data.examples
       $jsonval = examples
-    elsif @w==0 && @k==1
+    elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
       $jsonval = {"error" => "APIKEYNotfound"}
@@ -98,10 +91,10 @@ class JsondataController < ApplicationController
   end
 
   def relatedWords
-   if @w == 1
+   if @jsonword
       relatedWords = @data.relatedWords
       $jsonval = relatedWords
-    elsif @w==0 && @k==1
+    elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
       $jsonval = {"error" => "APIKEYNotfound"}
