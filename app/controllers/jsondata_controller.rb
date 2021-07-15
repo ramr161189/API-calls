@@ -23,7 +23,7 @@ class JsondataController < ApplicationController
     if @apigeneration
       wordparam = String(params[:word])
       @randomWord = wordparam[1,wordparam.length]
-      @jsondata = Jsondatum.find_by(word:$randomWord)
+      @jsondata = Jsondatum.find_by(word:@randomWord)
       if @jsondata
         @data = @jsondata
       end
