@@ -11,9 +11,9 @@ table, th, td {
     <aside id="notice"><%= notice %></aside>
   <% end %>
   <% require "securerandom" %>
-  <% $username = User.find(session[:user_id]).email %>
+  <% username = User.find(session[:user_id]).email %>
   <% User.find() do |users| %>
-      <%if $username == users.email%>
+      <%if username == users.email%>
         <% $plan = users.plan %>
         <% if $plan == 'basic'%>
           <%$totalapis = 5%>
@@ -29,7 +29,7 @@ table, th, td {
   <%end%>
   <%$apicount = Integer(0)%>
   <%Apigeneration.find_each(:batch_size => 10000) do |apigenerations|%>
-    <% if $username == apigenerations.email %>
+    <% if username == apigenerations.email %>
       <%$totalapicalls += Integer(apigenerations.usage)%>
     <%end%>
   <%end%>
