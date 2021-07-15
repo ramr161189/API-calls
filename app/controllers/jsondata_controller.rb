@@ -4,8 +4,8 @@ class JsondataController < ApplicationController
   def apikeycheck
     if User.find_by(email:$username).count < $apicalls
       key = String(params[:key])
-      $keyval = key[1,key.length]
-      @apigeneration = Apigeneration.find_by(apikey:$keyval)
+      @keyval = key[1,key.length]
+      @apigeneration = Apigeneration.find_by(apikey:@keyval)
       if @apigeneration
         val = Integer(@apigeneration.usage) + 1
         @apigeneration.update(usage: val)
@@ -63,7 +63,7 @@ class JsondataController < ApplicationController
     else
       $jsonval = {"error" => "APIKEYNotFound"}
     end
-    redirect_to "/words/randomWord?api_key:#{$keyval}"
+    redirect_to "/words/randomWord?api_key:#{@keyval}"
   end
 
   def definitions
@@ -75,7 +75,7 @@ class JsondataController < ApplicationController
     else
       $jsonval = {"error" => "APIKEYNotfound"}
     end
-    redirect_to "/words/word:#{$randomWord}/definitions?api_key:#{$keyval}"
+    redirect_to "/words/word:#{$randomWord}/definitions?api_key:#{@keyval}"
   end
 	
   def examples
@@ -87,7 +87,7 @@ class JsondataController < ApplicationController
     else
       $jsonval = {"error" => "APIKEYNotfound"}
     end
-    redirect_to "/words/word:#{$randomWord}/examples?api_key:#{$keyval}"
+    redirect_to "/words/word:#{$randomWord}/examples?api_key:#{@keyval}"
   end
 
   def relatedWords
@@ -99,7 +99,7 @@ class JsondataController < ApplicationController
     else
       $jsonval = {"error" => "APIKEYNotfound"}
     end
-    redirect_to "/words/word:#{$randomWord}/relatedWords?api_key:#{$keyval}"
+    redirect_to "/words/word:#{$randomWord}/relatedWords?api_key:#{@keyval}"
   end
 end
 
