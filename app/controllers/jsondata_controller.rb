@@ -67,7 +67,7 @@ class JsondataController < ApplicationController
   end
 
   def definitions
-    if @jsonword
+    if @jsondata
       definition = @data.definitions
       $jsonval = definition
     elsif @apigeneration
@@ -79,7 +79,7 @@ class JsondataController < ApplicationController
   end
 	
   def examples
-    if @jsonword
+    if @jsondata
       examples = @data.examples
       $jsonval = examples
     elsif @apigeneration
@@ -91,7 +91,7 @@ class JsondataController < ApplicationController
   end
 
   def relatedWords
-   if @jsonword
+   if @jsondata
       relatedWords = @data.relatedWords
       $jsonval = relatedWords
     elsif @apigeneration
