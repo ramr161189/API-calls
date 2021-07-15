@@ -6,8 +6,13 @@ class JsondataController < ApplicationController
       key = String(params[:key])
       $keyval = key[1,key.length]
       apigeneration = Apigeneration.find_by(apikey:$keyval)
-      val = Integer(apigeneration.usage)+1
-      apigeneration.update(usage: val)
+      if apigeneration
+        val = Integer(apigeneration.usage)+1
+        apigeneration.update(usage: val)
+	@t=1
+      else
+        @t=0
+      end      
     else
       format.html{redirect_to '/dashboard',notice: 'APIcalls Limit exceeded'}
   end
@@ -45,10 +50,14 @@ class JsondataController < ApplicationController
   end
 
   def randomWord
-    id = rand 133..168
-    word =  Jsondatum.find(id).word
-    val = {"word" =>"#{word}"}
-    $jsonval = val
+    if @t==1	  
+			id = rand 133..168
+			word =  Jsondatum.find(id).word
+			val = {"word" =>"#{word}"}
+			$jsonval = val
+		else
+			$jsonval = {"error" => "APIKEYNotFound"}
+		end
     redirect_to "/words/randomWord?api_key:#{$keyval}"
   end
 
