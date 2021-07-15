@@ -36,7 +36,7 @@ table, th, td {
   <p style="text-align:right; color:blue;">Welcome <%= $username%>(<%= $plan%>)</p>
     <%$index = 0%>
   <p style="text-align:right;"> <%= link_to "logout", :controller=> "sessions", :action=> "destroy" %></p>
-  <p style="text-align:right;"> <%= $totalapicalls%> / <%= $apicalls%></p>
+  <p style="text-align:right;"> <%= User.find_by(email:$username).count%> / <%= $apicalls%></p>
   <p>Generate api-key <%= link_to "+", :controller=> "apigeneration", :action=>"add" %> </p>
   <table  id="myTable"> 
   <tr>
