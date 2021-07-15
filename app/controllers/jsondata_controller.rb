@@ -19,7 +19,7 @@ class JsondataController < ApplicationController
 
   def wordcheck
     @w=0
-	  if @k==1
+    if @k==1
       wordparam = String(params[:word])
       @randomWord = wordparam[1,wordparam.length]
       jsondata = Jsondatum.find_by(word:$randomWord)
