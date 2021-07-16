@@ -5,7 +5,7 @@ class JsondataController < ApplicationController
     username = User.find(session[:user_id]).email
     if User.find(session[:user_id]).plan == 'basic'
       apicalls=500
-    elsif User.find(session[:user_id]).plan == 'basic'
+    elsif User.find(session[:user_id]).plan == 'advance'
       apicalls=1000
     else
       apicalls=2000
