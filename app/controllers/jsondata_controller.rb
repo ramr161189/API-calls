@@ -2,14 +2,12 @@ class JsondataController < ApplicationController
   before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedwords]
   before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
   def apikeycheck
-    username = User.find(session[:user_id]).email
-    if User.find(session[:user_id]).plan == 'basic'
-      apicalls=500
-    elsif User.find(session[:user_id]).plan == 'advance'
-      apicalls=1000
-    else
-      apicalls=2000
+	  count=0
+    if count==0
+      count++
+        apicalls=plan
     end
+    username = User.find(session[:user_id]).email
     if User.find_by(email:username).count < apicalls
       key = String(params[:key])
       @keyval = key[1,key.length]
@@ -37,6 +35,16 @@ class JsondataController < ApplicationController
     end
   end
 
+  def plan
+    if User.find(session[:user_id]).plan == 'basic'
+      return 500
+    elsif User.find(session[:user_id]).plan == 'advance'
+      return 1000
+    else
+      return 2000
+    end
+  end
+    
   def wordsdetails
     require 'json'
     file = File.read('dictionary.json')
