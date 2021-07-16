@@ -4,12 +4,12 @@ class JsondataController < ApplicationController
   def apikeycheck
     username = User.find(session[:user_id]).email
     if User.find(session[:user_id]).plan == 'basic'
-			apicalls=500
-		elsif User.find(session[:user_id]).plan == 'basic'
-			apicalls=1000
-		else
-			apicalls=2000
-		end
+      apicalls=500
+    elsif User.find(session[:user_id]).plan == 'basic'
+      apicalls=1000
+    else
+      apicalls=2000
+    end
     if User.find_by(email:username).count < apicalls
       key = String(params[:key])
       @keyval = key[1,key.length]
