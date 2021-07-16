@@ -3,16 +3,23 @@ class JsondataController < ApplicationController
   before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
   def apikeycheck
     username = User.find(session[:user_id]).email
-    if User.find_by(email:username).count < $apicalls
+    if User.find(session[:user_id]).plan == 'basic'
+			apicalls=500
+		elsif User.find(session[:user_id]).plan == 'basic'
+			apicalls=1000
+		else
+			apicalls=2000
+		end
+    if User.find_by(email:username).count < apicalls
       key = String(params[:key])
       @keyval = key[1,key.length]
       @apigeneration = Apigeneration.find_by(apikey:@keyval)
       if @apigeneration
         val = Integer(@apigeneration.usage) + 1
         @apigeneration.update(usage: val)
-	user = User.find_by(email:username)
-	countval = Integer(user.count) + 1
-	user.update(count: countval)			
+	      user = User.find_by(email:username)
+	      countval = Integer(user.count) + 1
+    	  user.update(count: countval)			
       end      
     else
       format.html{redirect_to '/dashboard',notice: 'APIcalls Limit exceeded'}
