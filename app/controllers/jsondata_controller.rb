@@ -2,10 +2,10 @@ class JsondataController < ApplicationController
   before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedwords]
   before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
   def apikeycheck
-	  count=0
+    count=0
     if count==0
       count++
-        apicalls=plan
+      apicalls=plan
     end
     username = User.find(session[:user_id]).email
     if User.find_by(email:username).count < apicalls
