@@ -1,7 +1,7 @@
 class JsondataController < ApplicationController
   before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedwords]
   before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
-	@count=0
+  @count=0
   def apikeycheck
     if @count==0
       @count++
