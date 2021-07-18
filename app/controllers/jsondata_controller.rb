@@ -17,7 +17,7 @@ class JsondataController < ApplicationController
         @apigeneration.update(usage: val)
 	user = User.find_by(email:username)
 	countval = Integer(user.count) + 1
-    	user.update(count: countval)			
+    	user.update_columns(count: countval)			
       end      
     else
       format.html{redirect_to '/dashboard',notice: 'APIcalls Limit exceeded'}
