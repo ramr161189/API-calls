@@ -29,7 +29,7 @@ class JsondataController < ApplicationController
     num = rand 133..168
     jsondata = Jsondatum.find(num)
     $jsonval = jsondata.definitions + jsondata.examples + jsondata.relatedwords
-    redirect_to '\jsondata'
+    redirect_to '/jsondata'
   end
 
   def randomWord
