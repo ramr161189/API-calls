@@ -1,67 +1,28 @@
 class JsondataController < ApplicationController
   before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedwords]
   before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
-  @@count = 0
   def apikeycheck
-    if @@count == 0
-      @@count++
-      apicalls = plan
-    end
     username = User.find(session[:user_id]).email
-    if User.find_by(email:username).count < apicalls
+    if User.find_by(email:username).count < $apicalls
       key = String(params[:key])
       @keyval = key[1,key.length]
       @apigeneration = Apigeneration.find_by(apikey:@keyval)
       if @apigeneration
-        val = Integer(@apigeneration.usage) + 1
-        @apigeneration.update(usage: val)
+        @apigeneration.update(usage: Integer(@apigeneration.usage) + 1)
 	user = User.find_by(email:username)
-	countval = Integer(user.count) + 1
-    	user.update_columns(count: countval)			
-      end      
+        user.update_columns(count: Integer(user.count) + 1)			
+      end     
     else
-      format.html{redirect_to '/dashboard',notice: 'APIcalls Limit exceeded'}
+      flash[:notice] = "LimitExceeded." 
+      redirect_to '/dashboard'
     end
   end
 
   def wordcheck
-    if @apigeneration
-      wordparam = String(params[:word])
-      @randomWord = wordparam[1,wordparam.length]
-      @jsondata = Jsondatum.find_by(word:@randomWord)
-      if @jsondata
-        @data = @jsondata
-      end
-    end
+    wordparam = String(params[:word])
+    @randomWord = wordparam[1,wordparam.length]
+    $data = Jsondatum.find_by(word:@randomWord)
   end
-
-  def plan
-    if User.find(session[:user_id]).plan == 'basic'
-      return 500
-    elsif User.find(session[:user_id]).plan == 'advance'
-      return 1000
-    else
-      return 2000
-    end
-  end
-    
-  def wordsdetails
-    require 'json'
-    file = File.read('dictionary.json')
-    data_hash = JSON.parse(file)
-    data_hash.each do |data|
-      json = Jsondatum.new
-      data.each do |values|
-        json.word = values if values.class == String
-	if values.class == Hash
-	  json.definitions = values["definitions"]
-	  json.examples = values["examples"]
-	  json.relatedwords = values["relatedWords"]
-	end
-	json.save
-      end
-    end
-  end	
 
   def wordofday
     num = rand 133..168
