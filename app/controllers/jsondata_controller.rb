@@ -1,6 +1,6 @@
 class JsondataController < ApplicationController
-  before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedwords]
-  before_action :wordcheck, only: [:definitions, :examples, :relatedwords]
+  before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedWords]
+  before_action :wordcheck, only: [:definitions, :examples, :relatedWords]
   def apikeycheck
     username = User.find(session[:user_id]).email
     if User.find_by(email:username).count < $apicalls
@@ -29,7 +29,7 @@ class JsondataController < ApplicationController
     num = rand 133..168
     jsondata = Jsondatum.find(num)
     $jsonval = jsondata.definitions + jsondata.examples + jsondata.relatedwords
-    redirect_to '\jsonpage'
+    redirect_to '\jsondata'
   end
 
   def randomWord
