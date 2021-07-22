@@ -46,7 +46,7 @@ class JsondataController < ApplicationController
 
   def definitions
     if @jsondata
-      $jsonval = @data.definitions
+      $jsonval = @jsondata.definitions
     elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
@@ -57,7 +57,7 @@ class JsondataController < ApplicationController
 	
   def examples
     if @jsondata
-      $jsonval = @data.examples
+      $jsonval = @jsondata.examples
     elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
@@ -68,7 +68,7 @@ class JsondataController < ApplicationController
 
   def relatedWords
    if @jsondata
-      $jsonval = @data.relatedWords
+      $jsonval = @jsondata.relatedWords
     elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
