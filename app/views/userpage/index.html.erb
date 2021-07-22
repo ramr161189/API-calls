@@ -17,10 +17,10 @@ table, th, td {
   <% if user.plan == 'basic'%>
     <%totalapis = 5%>
     <%$apicalls = 500%>
-  <%elsif user.plan =='advance'%>
+  <%elsif user.plan == 'advance'%>
     <%$apicalls = 1000%>
     <%totalapis = 10%>
-  <%else %>
+  <%else%>
     <%$apicalls = 2000%>
     <%totalapis = 20%>
   <%end%>
