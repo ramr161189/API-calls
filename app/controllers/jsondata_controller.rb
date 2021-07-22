@@ -9,7 +9,7 @@ class JsondataController < ApplicationController
       @apigeneration = Apigeneration.find_by(apikey:@keyval)
       if @apigeneration
         @apigeneration.update(usage: Integer(@apigeneration.usage) + 1)
-	user = User.find_by(email:username)
+	      user = User.find_by(email:username)
         user.update_columns(count: Integer(user.count) + 1)			
       end     
     else
@@ -19,9 +19,10 @@ class JsondataController < ApplicationController
   end
 
   def wordcheck
-    wordparam = String(params[:word])
-    @randomWord = wordparam[1,wordparam.length]
-    $data = Jsondatum.find_by(word:@randomWord)
+    if @apigeneration
+      wordparam = String(params[:word])
+      @randomWord = wordparam[1,wordparam.length]
+      @jsondata = Jsondatum.find_by(word:@randomWord)
   end
 
   def wordofday
@@ -45,8 +46,7 @@ class JsondataController < ApplicationController
 
   def definitions
     if @jsondata
-      definition = @data.definitions
-      $jsonval = definition
+      $jsonval = @data.definitions
     elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
@@ -57,8 +57,7 @@ class JsondataController < ApplicationController
 	
   def examples
     if @jsondata
-      examples = @data.examples
-      $jsonval = examples
+      $jsonval = @data.examples
     elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
@@ -69,8 +68,7 @@ class JsondataController < ApplicationController
 
   def relatedWords
    if @jsondata
-      relatedWords = @data.relatedWords
-      $jsonval = relatedWords
+      $jsonval = @data.relatedWords
     elsif @apigeneration
       $jsonval = {"error" => "wordnotfound"}
     else
