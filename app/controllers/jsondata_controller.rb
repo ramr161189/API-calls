@@ -9,7 +9,7 @@ class JsondataController < ApplicationController
       @apigeneration = Apigeneration.find_by(apikey:@keyval)
       if @apigeneration
         @apigeneration.update(usage: Integer(@apigeneration.usage) + 1)
-	      user = User.find_by(email:username)
+	user = User.find_by(email:username)
         user.update_columns(count: Integer(user.count) + 1)			
       end     
     else
