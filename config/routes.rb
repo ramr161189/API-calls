@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '/wordofday' => 'jsondata#wordofday'
+  get '/jsondata' => 'jsondata#index'
   get '/wordsdetails' => 'jsondata#wordsdetails'
   get '/words/randomWord/api_key:key' => 'jsondata#randomWord'
   get '/words/word:word/definitions/api_key:key' => 'jsondata#definitions'
