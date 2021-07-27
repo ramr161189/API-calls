@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '/wordofday' => 'jsondata#wordofday'
   get '/jsondata' => 'jsondata#index'
   get '/wordsdetails' => 'jsondata#wordsdetails'
@@ -18,5 +17,4 @@ Rails.application.routes.draw do
   get 'words/word:word/relatedWords' => 'jsondata#index'
   get '/dashboard' => 'userpage#index'
   get '/logout' => 'sessions#destroy'
-
 end
