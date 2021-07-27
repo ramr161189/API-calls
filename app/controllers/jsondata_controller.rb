@@ -15,7 +15,7 @@ class JsondataController < ApplicationController
         render json:{error:"Today limit is exceeded"}
       end
     else
-      render json:{"error":"APIKEY not found"}
+      render json:{error:"APIKEY not found"}
     end
   end
 
@@ -24,14 +24,13 @@ class JsondataController < ApplicationController
     randomWord = wordparam[1,wordparam.length]
     @jsondata = Jsondatum.find_by(word:randomWord)
     if !@jsondata
-      render json:{"wordnotfound"}
+      render json:{error:"wordnotfound"}
     end
   end
 
   def wordofday
     id = rand 347..379
-    word =  Jsondatum.find(id)
-    render json:word
+    render json:Jsondatum.find(id)
   end
 
   def randomWord
