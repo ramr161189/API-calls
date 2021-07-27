@@ -1,80 +1,52 @@
 class JsondataController < ApplicationController
   before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedWords]
   before_action :wordcheck, only: [:definitions, :examples, :relatedWords]
+
   def apikeycheck
-    username = User.find(session[:user_id]).email
-    if User.find_by(email:username).count < $apicalls
-      key = String(params[:key])
-      @keyval = key[1,key.length]
-      @apigeneration = Apigeneration.find_by(apikey:@keyval)
-      if @apigeneration
-        @apigeneration.update(usage: Integer(@apigeneration.usage) + 1)
-	user = User.find_by(email:username)
-        user.update_columns(count: Integer(user.count) + 1)			
-      end     
+    key = params[:key]
+    apikey = key[1,key.length]
+    apigeneration = Apigeneration.find_by(apikey:apikey)
+    if apigeneration
+      user=User.find_by(email:apigeneration.email)
+      if user.count < user.todaylimit
+	      user.update_columns(count: user.count + 1)
+	      apigeneration.update_columns(usage:apigeneration.usage + 1)
+	    else			
+        render json:{error:"Today limit is exceeded"}
+      end
     else
-      flash[:notice] = "LimitExceeded." 
-      redirect_to '/dashboard'
+      render json:{"error":"APIKEY not found"}
     end
   end
 
   def wordcheck
-    if @apigeneration
-      wordparam = String(params[:word])
-      @randomWord = wordparam[1,wordparam.length]
-      @jsondata = Jsondatum.find_by(word:@randomWord)
+    wordparam = params[:word]
+    randomWord = wordparam[1,wordparam.length]
+    @jsondata = Jsondatum.find_by(word:randomWord)
   end
 
   def wordofday
-    num = rand 133..168
-    jsondata = Jsondatum.find(num)
-    $jsonval = jsondata.definitions + jsondata.examples + jsondata.relatedwords
-    redirect_to '/jsondata'
+    id = rand 347..379
+    word =  Jsondatum.find(id)
+    render json:word
   end
 
   def randomWord
-    if @apigeneration  
-      id = rand 133..168
-      word =  Jsondatum.find(id).word
-      val = {"word" =>"#{word}"}
-      $jsonval = val
-    else
-      $jsonval = {"error" => "APIKEYNotFound"}
-    end
-    redirect_to "/words/randomWord?api_key:#{@keyval}"
+    id = rand 347..379
+    word =  Jsondatum.find(id).word
+    render json:{"word" =>"#{word}"}
   end
 
   def definitions
-    if @jsondata && @apigeneration
-      $jsonval = @jsondata.definitions
-    elsif @apigeneration
-      $jsonval = {"error" => "wordnotfound"}
-    else
-      $jsonval = {"error" => "APIKEYNotfound"}
-    end
-    redirect_to "/words/word:#{@randomWord}/definitions?api_key:#{@keyval}"
+    render json:@jsondata.definitions
   end
 	
   def examples
-    if @jsondata && @apigeneration
-      $jsonval = @jsondata.examples
-    elsif @apigeneration
-      $jsonval = {"error" => "wordnotfound"}
-    else
-      $jsonval = {"error" => "APIKEYNotfound"}
-    end
-    redirect_to "/words/word:#{@randomWord}/examples?api_key:#{@keyval}"
+    render json:@jsondata.examples
   end
 
   def relatedWords
-   if @jsondata && @apigeneration
-      $jsonval = @jsondata.relatedWords
-    elsif @apigeneration
-      $jsonval = {"error" => "wordnotfound"}
-    else
-      $jsonval = {"error" => "APIKEYNotfound"}
-    end
-    redirect_to "/words/word:#{@randomWord}/relatedWords?api_key:#{@keyval}"
-  end
+   render json:@jsondata.relatedwords
+  end  
 end
 
