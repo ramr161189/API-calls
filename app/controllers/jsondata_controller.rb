@@ -11,7 +11,7 @@ class JsondataController < ApplicationController
       if user.count < user.todaylimit
 	      user.update_columns(count: user.count + 1)
 	      apigeneration.update_columns(usage:apigeneration.usage + 1)
-	    else			
+      else
         render json:{error:"Today limit is exceeded"}
       end
     else
@@ -23,6 +23,9 @@ class JsondataController < ApplicationController
     wordparam = params[:word]
     randomWord = wordparam[1,wordparam.length]
     @jsondata = Jsondatum.find_by(word:randomWord)
+    if !@jsondata
+      render json:{"wordnotfound"}
+    end
   end
 
   def wordofday
@@ -47,6 +50,6 @@ class JsondataController < ApplicationController
 
   def relatedWords
    render json:@jsondata.relatedwords
-  end  
+  end
 end
 
