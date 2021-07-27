@@ -11,10 +11,6 @@ Rails.application.routes.draw do
   post '/sessions' => 'sessions#create'
   post '/users' => 'users#create'
   get '/jsonpage' =>'jsondata#index'
-  get '/words/randomWord' =>'jsondata#index'
-  get 'words/word:word/examples' => 'jsondata#index'
-  get 'words/word:word/definitions' => 'jsondata#index'
-  get 'words/word:word/relatedWords' => 'jsondata#index'
   get '/dashboard' => 'userpage#index'
   get '/logout' => 'sessions#destroy'
 end
