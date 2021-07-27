@@ -1,6 +1,6 @@
 class JsondataController < ApplicationController
-  before_action: apikeycheck, only: [: randomWord, : action]
-  before_action: wordcheck, only: [: action]
+  before_action:apikeycheck, only:[:randomWord, :action]
+  before_action:wordcheck, only:[:action]
 
   def apikeycheck
     key = params[:key]
