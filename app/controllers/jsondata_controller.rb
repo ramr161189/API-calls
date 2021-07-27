@@ -10,7 +10,7 @@ class JsondataController < ApplicationController
       user = User.find_by(email: apigeneration.email)
       if user.count < user.todaylimit
         user.update_columns(count: user.count + 1)
-	      apigeneration.update_columns(usage: apigeneration.usage + 1)
+	apigeneration.update_columns(usage: apigeneration.usage + 1)
       else
         render json:{ error: "Today limit is exceeded" }
       end
