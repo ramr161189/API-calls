@@ -1,6 +1,6 @@
 class JsondataController < ApplicationController
-  before_action :apikeycheck, only: [:randomWord, :definitions, :examples, :relatedWords]
-  before_action :wordcheck, only: [:definitions, :examples, :relatedWords]
+  before_action :apikeycheck, only: [:randomWord, :action]
+  before_action :wordcheck, only: [:action]
 
   def apikeycheck
     key = params[:key]
@@ -20,9 +20,8 @@ class JsondataController < ApplicationController
   end
 
   def wordcheck
-    wordparam = params[:word]
-    randomWord = wordparam[1,wordparam.length]
-    @jsondata = Jsondatum.find_by(word:randomWord)
+    word = params[:word]
+    @jsondata = Jsondatum.find_by(word:word)
     if !@jsondata
       render json:{error:"wordnotfound"}
     end
@@ -38,17 +37,18 @@ class JsondataController < ApplicationController
     word =  Jsondatum.find(id).word
     render json:{"word" =>"#{word}"}
   end
-
-  def definitions
-    render json:@jsondata.definitions
-  end
 	
-  def examples
-    render json:@jsondata.examples
-  end
-
-  def relatedWords
-   render json:@jsondata.relatedwords
-  end
+  def action
+    action= params[:apiaction]
+    if action == 'definitions'
+      render json:@jsondata.definitions
+    elsif action == 'examples'
+      render json:@jsondata.examples
+    elsif action == 'relatedWords'
+      render json:@jsondata.relatedwords
+    else
+      render json:{error:"cannot get #{action} action"}
+    end
+  end	
 end
 
