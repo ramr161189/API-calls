@@ -12,10 +12,10 @@ class JsondataController < ApplicationController
         user.update_columns(count: user.count + 1)
 	apigeneration.update_columns(usage:apigeneration.usage + 1)
       else
-        render json:{error:"Today limit is exceeded"}
+        render json:{ error:"Today limit is exceeded" }
       end
     else
-      render json:{error:"APIKEY not found"}
+      render json:{ error:"APIKEY not found" }
     end
   end
 
@@ -23,7 +23,7 @@ class JsondataController < ApplicationController
     word = params[:word]
     @jsondata = Jsondatum.find_by(word:word)
     if !@jsondata
-      render json:{error:"wordnotfound"}
+      render json:{ error:"wordnotfound" }
     end
   end
 
@@ -35,7 +35,7 @@ class JsondataController < ApplicationController
   def randomWord
     id = rand 347..379
     word =  Jsondatum.find(id).word
-    render json:{"word" => "#{word}"}
+    render json:{ "word" => "#{word}" }
   end
 	
   def action
@@ -47,7 +47,7 @@ class JsondataController < ApplicationController
     elsif action == 'relatedWords'
       render json:@jsondata.relatedwords
     else
-      render json:{error:"cannot get #{action} action"}
+      render json:{ error:"cannot get #{action} action" }
     end
   end	
 end
