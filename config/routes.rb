@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get '/jsondata' => 'jsondata#index'
   get '/wordsdetails' => 'jsondata#wordsdetails'
   get '/words/randomWord/api_key:key' => 'jsondata#randomWord'
-  get '/words/:word/:action/api_key:key' => 'jsondata#action'
+  get '/words/:word/:apiaction/api_key:key' => 'jsondata#action'
   get '/' => 'users#index'
   get '/+' => 'apigeneration#add'
   get '/X' => 'apigeneration#delete'
