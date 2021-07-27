@@ -4,10 +4,10 @@ class JsondataController < ApplicationController
 
   def apikeycheck
     key = params[:key]
-    apikey = key[1,key.length]
+    apikey = key[1, key.length]
     apigeneration = Apigeneration.find_by(apikey:apikey)
     if apigeneration
-      user=User.find_by(email:apigeneration.email)
+      user = User.find_by(email:apigeneration.email)
       if user.count < user.todaylimit
         user.update_columns(count: user.count + 1)
 	apigeneration.update_columns(usage:apigeneration.usage + 1)
@@ -35,11 +35,11 @@ class JsondataController < ApplicationController
   def randomWord
     id = rand 347..379
     word =  Jsondatum.find(id).word
-    render json:{"word" =>"#{word}"}
+    render json:{"word" => "#{word}"}
   end
 	
   def action
-    action= params[:apiaction]
+    action = params[:apiaction]
     if action == 'definitions'
       render json:@jsondata.definitions
     elsif action == 'examples'
