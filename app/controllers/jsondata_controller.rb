@@ -49,6 +49,24 @@ class JsondataController < ApplicationController
     else
       render json:{ error:"cannot get #{action} action" }
     end
+  end
+
+  def wordsdetails
+    require 'json'
+    file = File.read('dictionary.json')
+    data_hash = JSON.parse(file)
+    data_hash.each do |data|
+      json = Jsondatum.new
+      data.each do |values|
+        json.word = values if values.class == String
+	if values.class == Hash
+	  json.definitions = values["definitions"].to_json
+	  json.examples = values["examples"].to_json
+	  json.relatedwords = values["relatedWords"].to_json
+	end
+	json.save
+      end
+    end
   end	
 end
 
