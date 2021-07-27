@@ -1,7 +1,7 @@
 class ApigenerationController < ApplicationController
   
   def add
-    user = User.find(session[: user_id])
+    user = User.find(session[:user_id])
     if user.apikeycount < user.maxkey
       apigeneration = Apigeneration.new
       apigeneration.apikey = SecureRandom.uuid
@@ -18,7 +18,7 @@ class ApigenerationController < ApplicationController
   def delete
     val = params[:my_params]
     Apigeneration.where(apikey: val ).delete_all
-    user = User.find(session[: user_id])
+    user = User.find(session[:user_id])
     user.update_columns(apikeycount: user.apikeycount - 1)
     redirect_to '/dashboard'
   end
